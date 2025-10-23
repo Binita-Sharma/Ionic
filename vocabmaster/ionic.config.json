@@ -1,0 +1,7 @@
+{
+  "name": "vocabmaster",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
