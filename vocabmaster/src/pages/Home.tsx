@@ -31,22 +31,26 @@ const Home: React.FC = () => {
             <IonTitle size="large">VocabMaster</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonGrid>
+        <div className="hero-section">
+          <h1 className="hero-title">Welcome to VocabMaster</h1>
+          <p className="hero-subtitle">Enhance your vocabulary with our interactive translation and quiz features!</p>
+        </div>
+        <IonGrid className="grid-container">
           <IonRow className="ion-justify-content-center">
             <IonCol size="12" sizeMd="8" sizeLg="6">
-              <IonCard>
+              <IonCard className="welcome-card">
                 <IonCardHeader>
-                  <IonCardTitle>Welcome to VocabMaster</IonCardTitle>
+                  <IonCardTitle>Get Started Today</IonCardTitle>
                 </IonCardHeader>
                 <IonCardContent>
-                  <p>Enhance your vocabulary with our interactive translation and quiz features!</p>
+                  <p>Unlock the power of words and improve your language skills effortlessly.</p>
                 </IonCardContent>
               </IonCard>
               {isLoggedIn ? (
                 <>
-                  <IonCard>
+                  <IonCard className="feature-card">
                     <IonCardHeader>
-                      <IonCardTitle>Features</IonCardTitle>
+                      <IonCardTitle>Explore Features</IonCardTitle>
                     </IonCardHeader>
                     <IonCardContent>
                       <IonButton expand="full" routerLink="/vocabulary" className="ion-margin-bottom">
@@ -59,9 +63,9 @@ const Home: React.FC = () => {
                       </IonButton>
                     </IonCardContent>
                   </IonCard>
-                  <IonCard>
+                  <IonCard className="more-card">
                     <IonCardHeader>
-                      <IonCardTitle>More</IonCardTitle>
+                      <IonCardTitle>Learn More</IonCardTitle>
                     </IonCardHeader>
                     <IonCardContent>
                       <IonButton expand="full" routerLink="/about-us" fill="outline" className="ion-margin-bottom">
@@ -76,9 +80,9 @@ const Home: React.FC = () => {
                   </IonCard>
                 </>
               ) : (
-                <IonCard>
+                <IonCard className="get-started-card">
                   <IonCardHeader>
-                    <IonCardTitle>Get Started</IonCardTitle>
+                    <IonCardTitle>Join Us Now</IonCardTitle>
                   </IonCardHeader>
                   <IonCardContent>
                     <IonButton expand="full" routerLink="/login" className="ion-margin-bottom">
@@ -92,9 +96,9 @@ const Home: React.FC = () => {
                   </IonCardContent>
                 </IonCard>
               )}
-              <IonCard>
+              <IonCard className="legal-card">
                 <IonCardHeader>
-                  <IonCardTitle>Legal</IonCardTitle>
+                  <IonCardTitle>Legal Information</IonCardTitle>
                 </IonCardHeader>
                 <IonCardContent>
                   <IonButton expand="full" routerLink="/terms" fill="clear" size="small">

@@ -26,6 +26,7 @@ interface Question {
   question: string;
   options: string[];
   correct: number;
+  language: string;
 }
 
 const Quiz: React.FC = () => {
@@ -34,32 +35,68 @@ const Quiz: React.FC = () => {
 
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
 
   const questions: Question[] = [
     {
-      question: "What is the Spanish word for 'hello'?",
-      options: ["Hola", "Adiós", "Gracias", "Por favor"],
+      question: "What is the Hindi word for 'hello'?",
+      options: ["Namaste", "Alvida", "Dhanyavaad", "Kripaya"],
       correct: 0,
+      language: "Hindi",
     },
     {
-      question: "What does 'agua' mean in English?",
+      question: "What does 'Paani' mean in English?",
       options: ["Fire", "Water", "Earth", "Air"],
       correct: 1,
+      language: "Hindi",
     },
     {
-      question: "How do you say 'thank you' in Spanish?",
-      options: ["Perdón", "Disculpe", "Gracias", "De nada"],
-      correct: 2,
+      question: "What is the Hindi word for 'goodbye'?",
+      options: ["Namaste", "Alvida", "Dhanyavaad", "Kripaya"],
+      correct: 1,
+      language: "Hindi",
     },
     {
-      question: "What is the translation of 'casa'?",
+      question: "How do you say 'please' in Hindi?",
+      options: ["Namaste", "Alvida", "Dhanyavaad", "Kripaya"],
+      correct: 3,
+      language: "Hindi",
+    },
+    {
+      question: "What is the translation of 'Ghar'?",
       options: ["Car", "House", "Book", "School"],
       correct: 1,
+      language: "Hindi",
     },
     {
-      question: "What does 'por favor' mean?",
+      question: "How do you say 'thank you' in Telugu?",
+      options: ["Dayachesi", "Veedkolu", "Dhanyavaadalu", "Namaskaram"],
+      correct: 2,
+      language: "Telugu",
+    },
+    {
+      question: "What does 'Dayachesi' mean?",
       options: ["Excuse me", "Please", "Thank you", "Goodbye"],
       correct: 1,
+      language: "Telugu",
+    },
+    {
+      question: "What does 'Aahaaram' mean in English?",
+      options: ["Water", "Food", "House", "Car"],
+      correct: 1,
+      language: "Telugu",
+    },
+    {
+      question: "What is the Telugu word for 'water'?",
+      options: ["Neeru", "Aahaaram", "Illu", "Car"],
+      correct: 0,
+      language: "Telugu",
+    },
+    {
+      question: "What does 'School' mean in English?",
+      options: ["Car", "House", "Book", "School"],
+      correct: 3,
+      language: "English",
     },
   ];
 
@@ -68,11 +105,11 @@ const Quiz: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (selectedAnswer === questions[currentQuestion].correct) {
+    if (selectedAnswer === filteredQuestions[currentQuestion].correct) {
       setScore(score + 1);
     }
 
-    if (currentQuestion < questions.length - 1) {
+    if (currentQuestion < filteredQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
     } else {
@@ -85,9 +122,16 @@ const Quiz: React.FC = () => {
     setScore(0);
     setSelectedAnswer(null);
     setQuizCompleted(false);
+    setSelectedLanguage(null);
   };
 
-  const progress = (currentQuestion + 1) / questions.length;
+  const handleLanguageSelect = (language: string) => {
+    setSelectedLanguage(language);
+  };
+
+  const filteredQuestions = selectedLanguage ? questions.filter(q => q.language === selectedLanguage) : [];
+
+  const progress = selectedLanguage ? (currentQuestion + 1) / filteredQuestions.length : 0;
 
   return (
     <IonPage>
@@ -103,18 +147,50 @@ const Quiz: React.FC = () => {
         <IonGrid>
           <IonRow className="ion-justify-content-center">
             <IonCol size="12" sizeMd="8" sizeLg="6">
-              {!quizCompleted ? (
+              {!selectedLanguage ? (
                 <IonCard>
                   <IonCardHeader>
-                    <IonCardTitle>Question {currentQuestion + 1} of {questions.length}</IonCardTitle>
+                    <IonCardTitle>Select a Language</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <IonText>
+                      <p>Choose the language you want to learn:</p>
+                    </IonText>
+                    <IonButton
+                      expand="full"
+                      onClick={() => handleLanguageSelect('Hindi')}
+                      className="ion-margin-top"
+                    >
+                      Hindi
+                    </IonButton>
+                    <IonButton
+                      expand="full"
+                      onClick={() => handleLanguageSelect('Telugu')}
+                      className="ion-margin-top"
+                    >
+                      Telugu
+                    </IonButton>
+                    <IonButton
+                      expand="full"
+                      onClick={() => handleLanguageSelect('English')}
+                      className="ion-margin-top"
+                    >
+                      English
+                    </IonButton>
+                  </IonCardContent>
+                </IonCard>
+              ) : !quizCompleted ? (
+                <IonCard>
+                  <IonCardHeader>
+                    <IonCardTitle>Question {currentQuestion + 1} of {filteredQuestions.length}</IonCardTitle>
                     <IonProgressBar value={progress} />
                   </IonCardHeader>
                   <IonCardContent>
                     <IonText>
-                      <h3>{questions[currentQuestion].question}</h3>
+                      <h3>{filteredQuestions[currentQuestion].question}</h3>
                     </IonText>
                     <IonList>
-                      {questions[currentQuestion].options.map((option, index) => (
+                      {filteredQuestions[currentQuestion].options.map((option, index) => (
                         <IonItem
                           key={index}
                           button
@@ -131,7 +207,7 @@ const Quiz: React.FC = () => {
                       disabled={selectedAnswer === null}
                       className="ion-margin-top"
                     >
-                      {currentQuestion < questions.length - 1 ? 'Next' : 'Finish Quiz'}
+                      {currentQuestion < filteredQuestions.length - 1 ? 'Next' : 'Finish Quiz'}
                     </IonButton>
                   </IonCardContent>
                 </IonCard>
@@ -142,11 +218,11 @@ const Quiz: React.FC = () => {
                   </IonCardHeader>
                   <IonCardContent>
                     <IonText>
-                      <h2>Your Score: {score} out of {questions.length}</h2>
+                      <h2>Your Score: {score} out of {filteredQuestions.length}</h2>
                       <p>
-                        {score === questions.length
+                        {score === filteredQuestions.length
                           ? 'Perfect! You got all questions right!'
-                          : score >= questions.length * 0.7
+                          : score >= filteredQuestions.length * 0.7
                           ? 'Great job! Keep practicing!'
                           : 'Good effort! Try again to improve your score.'}
                       </p>
